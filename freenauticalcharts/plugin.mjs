@@ -68,7 +68,7 @@ const buildHtmlInfo=(allFeatures)=>{
             rt+='<div class="featureInfoHtml">\n';
             for (let k in feature){
                 if (k.startsWith('_')) continue;
-                rt+=`<div class="featureAttr">${k}:${feature[k]}</div>\n`;
+                rt+=`<div class="featureAttr">${api.escapeHtml(k)}:${api.escapeHtml(feature[k])}</div>\n`;
             }
             rt+='</div>\n';
     })
