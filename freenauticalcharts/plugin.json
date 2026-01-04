@@ -11,7 +11,7 @@
                     "minzoom":6,
                     "maxzoom":18,
                     "profile":"maplibreVector",
-                    "freaturelistFormatter":"freenauticalFormatter"
+                    "featurelistformatter":"freenauticalFormatter"
                 }
             ],
             "name":"freenautical",
