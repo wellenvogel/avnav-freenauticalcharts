@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="compass.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="5.5033335"
+     inkscape:cx="63.325255"
+     inkscape:cy="55.784371"
+     inkscape:window-width="2067"
+     inkscape:window-height="1076"
+     inkscape:window-x="1206"
+     inkscape:window-y="240"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       fill="currentColor"
+       d="M 15.674235,9.8786797 15.105829,0.40889008 9.8786797,8.3257654 0.40889008,8.8941715 8.3257654,14.12132 8.8941715,23.59111 14.12132,15.674235 23.59111,15.105829 15.674235,9.8786797 M 4.2725934,9.9294476 10.585786,9.5505103 11.034074,11.741181 4.2725934,9.9294476 M 9.9294476,19.727407 9.5505103,13.414214 11.741181,12.965926 9.9294476,19.727407 M 14.070552,4.2725934 14.44949,10.585786 12.258819,11.034074 14.070552,4.2725934 m -0.656338,10.1768966 -0.448288,-2.190671 6.761481,1.811733 -6.313193,0.378938 m -5.9735102,1.815814 -4.0139179,0.684443 2.5997044,-3.133933 1.4160718,0.897074 -0.00186,1.552416 m 8.8246002,0.293992 0.684443,4.013918 -3.133933,-2.599704 0.897074,-1.416072 1.552416,0.0019 M 7.734696,7.4407038 7.0502525,3.4267859 10.184186,6.0264903 9.3129942,7.3459695 7.734696,7.4407038 m 8.8246,0.2939922 4.013918,-0.6844435 -2.599704,3.1339335 -1.416072,-0.8970737 z"
+       id="path5"
+       style="fill:#d7d7d7;fill-opacity:1" />
+  </g>
+</svg>

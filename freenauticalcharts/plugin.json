@@ -1,0 +1,21 @@
+{
+    "version":"0.0.1",
+    "description":"a plugin for freenauticalcharts",
+    "charts":[
+        {
+            "layers":[
+                {
+                    "url":"https://freenauticalchart.net/style.json",
+                    "useproxy":true,
+                    "name":"main",
+                    "minzoom":6,
+                    "maxzoom":18,
+                    "profile":"maplibreVector",
+                    "freaturelistFormatter":"freenauticalFormatter"
+                }
+            ],
+            "name":"freenautical",
+            "icon":"compass.svg"
+        }
+    ]
+}
