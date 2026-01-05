@@ -1,21 +1,21 @@
 {
-    "version":"0.0.2",
-    "description":"a plugin for freenauticalcharts",
-    "charts":[
+  "version": "20260105",
+  "description": "a plugin for freenauticalcharts",
+  "charts": [
+    {
+      "layers": [
         {
-            "layers":[
-                {
-                    "url":"https://freenauticalchart.net/style.json",
-                    "useproxy":true,
-                    "name":"main",
-                    "minzoom":6,
-                    "maxzoom":18,
-                    "profile":"maplibreVector",
-                    "featurelistformatter":"freenauticalFormatter"
-                }
-            ],
-            "name":"freenautical",
-            "icon":"compass.svg"
+          "url": "https://freenauticalchart.net/style.json",
+          "useproxy": true,
+          "name": "main",
+          "minzoom": 6,
+          "maxzoom": 18,
+          "profile": "maplibreVector",
+          "featurelistformatter": "freenauticalFormatter"
         }
-    ]
+      ],
+      "name": "freenautical",
+      "icon": "compass.svg"
+    }
+  ]
 }
