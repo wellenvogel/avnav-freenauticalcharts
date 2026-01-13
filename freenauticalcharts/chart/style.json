@@ -50,7 +50,7 @@
         "filter": [ "has", "VALDCO" ],
         "layout": {
          "text-field": "{VALDCO}",
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
 
          "text-size": 12,
          "text-anchor": "center",
@@ -277,7 +277,7 @@
             ""],
           "icon-overlap": "always",
           "text-field": "{OBJNAM}",
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
 
           "text-size": 12,
           "text-anchor": "top",
@@ -323,7 +323,7 @@
             "submerged"]],
          "icon-overlap": "always",
          "text-field": "({VALSOU})",
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
          "text-size": ["case",["has","VALSOU"],12,0],
          "text-anchor": "top",
          "text-optional": true,
@@ -350,7 +350,7 @@
            "obstruction"],
          "icon-overlap": "always",
          "text-field": "({VALSOU})",
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
          "text-size": ["case",["has","VALSOU"],12,0],
          "text-anchor": "top",
          "text-optional": true,
@@ -642,7 +642,7 @@
           "icon-overlap": "always",
           "text-field": "{OBJNAM}",
           "text-size": 12,
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
           "text-anchor": "bottom-left",
           "text-offset": [1.2,-1.2],
           "text-optional": true
@@ -656,7 +656,7 @@
         "filter": [ "all", ["==", ["geometry-type"], "Point"],["has","VALMAG"]],
         "layout": {
           "text-field": "{label}",
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
           "text-size": 12
         },
         "paint": {
@@ -800,7 +800,7 @@
         "layout": {
           "text-field": "{OBJNAM}",
           "text-size": 12,
-          "text-font": ["Noto Sans Regular"]
+          "text-font": ["Open Sans Regular"]
         },
         "paint": {
           "text-color": ["case",
@@ -931,7 +931,7 @@
           "text-anchor": "top",
           "text-size": 12,
           "symbol-placement": "line",
-          "text-font": ["Noto Sans Regular"]
+          "text-font": ["Open Sans Regular"]
 
         },
         "paint": {
@@ -993,7 +993,7 @@
           "text-anchor": "top",
           "text-size": 12,
           "text-optional": true,
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
           "icon-offset": [0,-6]
         },
         "paint": {
@@ -1061,7 +1061,7 @@
               ]
             ],
          "text-size": 14,
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
          "text-anchor": "center"
         },
         "paint": {
@@ -1076,7 +1076,7 @@
         "filter": ["all",["has","DRVAL1"],["!",["has","DRVAL2"]]],
         "layout": {
           "text-field": ["concat",["case",["==",["get","QUASOU"],10],"maintained depth ",""],["get","DRVAL1"],"m"],
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
           "text-size": 12
         },
         "paint": {
@@ -1092,7 +1092,7 @@
         "layout": {
           "text-field": "{OBJNAM}",
          "text-size": 14,
-         "text-font": ["Noto Sans Italic"]
+         "text-font": ["Open Sans Italic"]
         },
         "paint": {
           "text-color": "gray"
@@ -1106,7 +1106,7 @@
         "filter": [ "all", ["==", ["geometry-type"], "Point"],["has","berth_type"],["has","OBJNAM"]],
         "layout": {
           "text-field": "{OBJNAM}",
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular"],
           "text-size": 12
         },
         "paint": {
@@ -1123,7 +1123,7 @@
          "text-field": "{OBJNAM}",
          "text-size": 12,
          "text-anchor": "bottom-left",
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
          "text-offset": [1.2,-1]
         },
         "paint": {
@@ -1173,7 +1173,7 @@
             ],
          "text-size": 12,
          "text-anchor": "top-left",
-         "text-font": ["Noto Sans Regular"],
+         "text-font": ["Open Sans Regular"],
          "text-offset": ["case",["has","SECTR1"],["literal",[1.2,1.1]],["literal",[1.2,-0.5]]]
         }
     }
