@@ -1,0 +1,2757 @@
+_definitions:
+  - basefontsize: &basefontsize 12
+  - increasedfont: &increasedfont 14
+  - smallerfont: &smallerfont 10
+  - &basefont
+    text-font:
+      - Open Sans Regular
+    text-size: *basefontsize
+  
+  - &italicfont
+    text-font:
+      - Open Sans Italic
+    text-size: *increasedfont
+  
+  - &boldfont
+    text-font:
+      - Open Sans Bold
+    text-size: *basefontsize     
+
+glyphs: '{fontstack}/{range}.pbf'
+layers:
+- filter:
+  - any
+  - - has
+    - DRVAL1
+  - - has
+    - land_type
+  id: depthareas
+  paint:
+    fill-color:
+    - case
+    - - '!'
+      - - has
+        - DRVAL1
+    - '#F9ECC0'
+    - - '!'
+      - - has
+        - DRVAL2
+    - '#eee'
+    - - <
+      - - get
+        - DRVAL1
+      - 0
+    - '#CADBC1'
+    - - <
+      - - get
+        - DRVAL1
+      - 2
+    - '#AFCCE3'
+    - - <
+      - - get
+        - DRVAL1
+      - 5
+    - '#CADEEF'
+    - - <
+      - - get
+        - DRVAL1
+      - 10
+    - '#F1F6FC'
+    - white
+    fill-opacity:
+    - case
+    - - has
+      - DRVAL1
+    - 1
+    - 0.5
+  source: bsh
+  source-layer: SkinOfTheEarth
+  type: fill
+- filter:
+  - has
+  - VALDCO
+  id: contourlines
+  paint:
+    line-color:
+    - case
+    - - ==
+      - - get
+        - VALDCO
+      - 2
+    - red
+    - gray
+    line-width:
+    - case
+    - - ==
+      - - get
+        - VALDCO
+      - 5
+    - 1.6
+    - 1
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - has
+  - VALDCO
+  id: contourlabels
+  layout:
+    <<: *basefont
+    symbol-placement: line
+    symbol-spacing: 200
+    text-anchor: center
+    text-field: '{VALDCO}'
+  paint:
+    text-color: '#444'
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - '!='
+    - - get
+      - coast_type
+    - 1
+  - - '!='
+    - - get
+      - land_type
+    - 6
+  id: topo-areas
+  paint:
+    fill-color:
+    - case
+    - - ==
+      - - get
+        - land_type
+      - 1
+    - '#ae9147'
+    - - ==
+      - - get
+        - land_type
+      - 4
+    - '#7cb6ea'
+    - - ==
+      - - get
+        - land_type
+      - 7
+    - '#a17d29'
+    - - ==
+      - - get
+        - land_type
+      - 9
+    - '#7cb6ea'
+    - - ==
+      - - get
+        - land_type
+      - 11
+    - green
+    - - ==
+      - - get
+        - coast_type
+      - 2
+    - '#c6a632'
+    - - has
+      - CATBRG
+    - '#cb9b35'
+    - - has
+      - facility_type
+    - '#ae9147'
+    - - has
+      - trans_type
+    - '#555'
+    - - has
+      - dock_type
+    - '#7cb6ea'
+    - gray
+    fill-opacity:
+    - case
+    - - ==
+      - - get
+        - land_type
+      - 11
+    - 0.2
+    - 0.6
+  source: bsh
+  source-layer: Topography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  id: topo-lines
+  paint:
+    line-color:
+    - case
+    - - ==
+      - - get
+        - land_type
+      - 7
+    - '#0066d4'
+    - - ==
+      - - get
+        - land_type
+      - 4
+    - brown
+    - - ==
+      - - get
+        - caution_type
+      - 4
+    - gray
+    - - ==
+      - - get
+        - land_type
+      - 8
+    - gray
+    - - ==
+      - - get
+        - util_type
+      - 8
+    - gray
+    - - ==
+      - - get
+        - trans_type
+      - 2
+    - '#0066d4'
+    - black
+    line-width:
+    - case
+    - - ==
+      - - get
+        - land_type
+      - 7
+    - 1.5
+    - - ==
+      - - get
+        - trans_type
+      - 2
+    - 3
+    - - ==
+      - - get
+        - land_type
+      - 2
+    - 3
+    - - ==
+      - - get
+        - CATSLO
+      - 6
+    - 2
+    - - ==
+      - - get
+        - CATSLC
+      - 2
+    - 1.5
+    - - ==
+      - - get
+        - CATSLC
+      - 9
+    - 2
+    - - ==
+      - - get
+        - CATSLC
+      - 10
+    - 2.5
+    - 1
+  source: bsh
+  source-layer: Topography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - '>'
+    - - get
+      - uband
+    - 3
+  - - ==
+    - - get
+      - CATSLO
+    - 6
+  id: topo-cliffs
+  layout:
+    icon-image: cliff
+    icon-offset:
+    - 0
+    - -3
+    icon-overlap: always
+    icon-rotate: 180
+    symbol-placement: line
+    symbol-spacing: 10
+  paint: {}
+  source: bsh
+  source-layer: Topography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 4
+  id: TSS-inshore-traffic-zone
+  paint:
+    line-color: magenta
+    line-dasharray:
+    - 1
+    - 4
+    line-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 11
+  id: TSS-separation-zone
+  paint:
+    fill-color: magenta
+    fill-opacity: 0.2
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 8
+  id: TSS-crossing-zone
+  paint:
+    fill-color: yellow
+    fill-opacity: 0.1
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 9
+  id: TSS-separation-lane
+  paint:
+    fill-color: yellow
+    fill-opacity: 0.05
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 9
+  id: TSS-separation-lane-arrows
+  layout:
+    icon-image: TSS-arrow
+    icon-rotate:
+    - get
+    - ORIENT
+    icon-rotation-alignment: map
+    icon-size: 0.6
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 7
+  id: TSS-separation-boundary
+  paint:
+    line-color: magenta
+    line-dasharray:
+    - 4
+    - 4
+    line-opacity: 0.8
+    line-width: 2
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - has
+    - CATTSS
+  - - ==
+    - - get
+      - zone_type
+    - 6
+  id: TSS-separation-line
+  paint:
+    line-color: magenta
+    line-opacity: 0.8
+    line-width: 2
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - ==
+    - - get
+      - zone_type
+    - 7
+  id: traffic-lane
+  paint:
+    fill-color: yellow
+    fill-opacity: 0.05
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - ==
+    - - get
+      - zone_type
+    - 7
+  id: traffic-lane-arrows
+  layout:
+    icon-image: TSS-arrow-dashed
+    icon-rotate:
+    - get
+    - ORIENT
+    icon-rotation-alignment: map
+    icon-size: 0.6
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - any
+    - - has
+      - CATPLE
+    - - has
+      - CATMOR
+  id: piles
+  paint:
+    circle-radius: 3
+  source: bsh
+  source-layer: Topography
+  type: circle
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - ORIENT
+  - - ==
+    - - get
+      - meta_type
+    - 6
+  id: dir-of-buoyage
+  layout:
+    icon-image: dir-buoyage-a
+    icon-rotate:
+    - get
+    - ORIENT
+    icon-rotation-alignment: map
+  paint:
+    icon-opacity: 0.5
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - any
+    - - has
+      - CATHAF
+  id: harhours
+  layout:
+    icon-image:
+    - case
+    - - in
+      - 5
+      - - get
+        - CATHAF
+    - marina
+    - - in
+      - 4
+      - - get
+        - CATHAF
+    - fishingharbour
+    - ''
+    icon-overlap: always
+    text-anchor: top
+    text-field: '{OBJNAM}'
+    <<: *basefont
+    text-offset:
+    - 0
+    - 1.2
+    text-optional: true
+  paint:
+    text-color: magenta
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - CATOFP
+  id: platforms
+  layout:
+    icon-image: platform
+    icon-overlap: always
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - ==
+    - - get
+      - caution_type
+    - 6
+  - - ==
+    - - get
+      - EXPSOU
+    - 2
+  id: rocks-dangerous
+  layout:
+    icon-image: obstruction
+    icon-overlap: always
+  source: bsh
+  source-layer: RocksWrecksObstructions
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - ==
+    - - get
+      - caution_type
+    - 6
+  id: rocks
+  layout:
+    icon-image:
+    - concat
+    - rock-
+    - - case
+      - - ==
+        - - get
+          - WATLEV
+        - 4
+      - covers
+      - - ==
+        - - get
+          - WATLEV
+        - 5
+      - awash
+      - submerged
+    icon-overlap: always
+    text-anchor: top
+    text-field: ({VALSOU})
+    <<: *basefont
+    text-offset:
+    - 0
+    - 0.6
+    text-optional: true
+    text-size:
+    - case
+    - - has
+      - VALSOU
+    - *basefontsize
+    - 0
+  paint:
+    text-color:
+    - case
+    - - <
+      - 5
+      - - get
+        - VALSOU
+    - gray
+    - black
+  source: bsh
+  source-layer: RocksWrecksObstructions
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - '!='
+    - - get
+      - caution_type
+    - 6
+  id: obstructions
+  layout:
+    icon-image:
+    - case
+    - - ==
+      - - get
+        - CATWRK
+      - 1
+    - wreck-non-dangerous
+    - - ==
+      - - get
+        - CATWRK
+      - 2
+    - wreck-dangerous
+    - - ==
+      - - get
+        - CATWRK
+      - 4
+    - wreck-hull_showing
+    - - ==
+      - - get
+        - CATWRK
+      - 5
+    - wreck-hull_showing
+    - - ==
+      - - get
+        - CATOBS
+      - 6
+    - foul
+    - - ==
+      - - get
+        - CATOBS
+      - 7
+    - foul
+    - obstruction
+    icon-overlap: always
+    text-anchor: top
+    text-field: ({VALSOU})
+    <<: *basefont
+    text-offset:
+    - 0
+    - 0.8
+    text-optional: true
+    text-size:
+    - case
+    - - has
+      - VALSOU
+    - *basefontsize
+    - 0
+  paint:
+    text-color:
+    - case
+    - - <
+      - 5
+      - - get
+        - VALSOU
+    - gray
+    - black
+  source: bsh
+  source-layer: RocksWrecksObstructions
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - '!'
+    - - any
+      - - has
+        - ORIENT
+      - - all
+        - - has
+          - SECTR1
+        - - has
+          - SECTR2
+  id: lights
+  layout:
+    icon-image:
+    - concat
+    - - case
+      - - in
+        - 8
+        - - get
+          - CATLIT
+      - floodlight/
+      - light/
+    - - case
+      - - has
+        - color
+      - - get
+        - color
+      - generic
+    icon-overlap: always
+    icon-rotate:
+    - +
+    - 45
+    - - case
+      - - in
+        - 3
+        - - get
+          - COLOUR
+      - 10
+      - - in
+        - 4
+        - - get
+          - COLOUR
+      - -10
+      - 0
+    icon-rotation-alignment: viewport
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - any
+    - - has
+      - ORIENT
+    - - all
+      - - has
+        - SECTR1
+      - - has
+        - SECTR2
+  id: lights-oriented
+  layout:
+    icon-image:
+    - concat
+    - - case
+      - - in
+        - 8
+        - - get
+          - CATLIT
+      - floodlight/
+      - light/
+    - - case
+      - - has
+        - color
+      - - get
+        - color
+      - generic
+    icon-overlap: always
+    icon-rotate:
+    - case
+    - - has
+      - ORIENT
+    - - get
+      - ORIENT
+    - - all
+      - - has
+        - SECTR1
+      - - has
+        - SECTR2
+    - - let
+      - angle
+      - - case
+        - - '>='
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - '-'
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - +
+          - - '-'
+            - - get
+              - SECTR2
+            - - get
+              - SECTR1
+          - 360
+      - - +
+        - - get
+          - SECTR1
+        - - /
+          - - var
+            - angle
+          - 2
+    - 0
+    icon-rotation-alignment: map
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - has
+    - SECTR1
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-sector1
+  layout:
+    icon-image: line-dashed
+    icon-offset:
+    - 0
+    - 256
+    icon-overlap: always
+    icon-pitch-alignment: map
+    icon-rotate:
+    - get
+    - SECTR1
+    icon-rotation-alignment: map
+    icon-size:
+    - '*'
+    - - case
+      - - ==
+        - - get
+          - EXCLIT
+        - 3
+      - 0.5
+      - 1
+    - - interpolate
+      - - linear
+      - - coalesce
+        - - get
+          - VALNMR
+        - 99
+      - 3
+      - 0.6
+      - 10
+      - 1
+  paint:
+    icon-opacity: 0.7
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - has
+    - SECTR2
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-sector2
+  layout:
+    icon-image: line-dashed
+    icon-offset:
+    - 0
+    - 256
+    icon-overlap: always
+    icon-pitch-alignment: map
+    icon-rotate:
+    - get
+    - SECTR2
+    icon-rotation-alignment: map
+    icon-size:
+    - '*'
+    - - case
+      - - ==
+        - - get
+          - EXCLIT
+        - 3
+      - 0.5
+      - 1
+    - - interpolate
+      - - linear
+      - - coalesce
+        - - get
+          - VALNMR
+        - 99
+      - 3
+      - 0.6
+      - 10
+      - 1
+  paint:
+    icon-opacity: 0.7
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - has
+    - SECTR1
+  - - has
+    - SECTR2
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-arc-0
+  layout:
+    icon-image:
+    - let
+    - angle
+    - - +
+      - - '-'
+        - - get
+          - SECTR2
+        - - get
+          - SECTR1
+      - - case
+        - - '>='
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - 0
+        - 360
+    - - concat
+      - arc-
+      - - step
+        - - var
+          - angle
+        - -1
+        - 0
+        - 0
+        - 4.444
+        - 1
+        - 13.333
+        - 2
+        - 40
+        - 3
+        - 120
+        - 4
+      - '-'
+      - - get
+        - color
+    icon-overlap: always
+    icon-pitch-alignment: map
+    icon-rotate:
+    - get
+    - SECTR1
+    icon-rotation-alignment: map
+    icon-size:
+    - '*'
+    - - case
+      - - ==
+        - - get
+          - EXCLIT
+        - 3
+      - 0.5
+      - 1
+    - - interpolate
+      - - linear
+      - - coalesce
+        - - get
+          - VALNMR
+        - 99
+      - 3
+      - 0.6
+      - 10
+      - 1
+    - - let
+      - angle
+      - - +
+        - - '-'
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - case
+          - - '>='
+            - - get
+              - SECTR2
+            - - get
+              - SECTR1
+          - 0
+          - 360
+      - - interpolate
+        - - linear
+        - - var
+          - angle
+        - 0
+        - 3
+        - 6
+        - 1
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - has
+    - SECTR1
+  - - has
+    - SECTR2
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-arc-1
+  layout:
+    icon-image:
+    - let
+    - angle
+    - - +
+      - - '-'
+        - - get
+          - SECTR2
+        - - get
+          - SECTR1
+      - - case
+        - - '>='
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - 0
+        - 360
+    - - concat
+      - arc-
+      - - step
+        - - var
+          - angle
+        - -1
+        - 0
+        - 0
+        - 4.444
+        - 1
+        - 13.333
+        - 2
+        - 40
+        - 3
+        - 120
+        - 4
+      - '-'
+      - - get
+        - color
+    icon-overlap: always
+    icon-pitch-alignment: map
+    icon-rotate:
+    - let
+    - angle
+    - - +
+      - - '-'
+        - - get
+          - SECTR2
+        - - get
+          - SECTR1
+      - - case
+        - - '>='
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - 0
+        - 360
+    - - +
+      - - get
+        - SECTR1
+      - - '*'
+        - - var
+          - angle
+        - 0.5
+      - - step
+        - - var
+          - angle
+        - -1
+        - 0
+        - -0.741
+        - 4.444
+        - -2.222
+        - 13.333
+        - -6.666
+        - 40
+        - -20
+        - 120
+        - -60
+    icon-rotation-alignment: map
+    icon-size:
+    - '*'
+    - - case
+      - - ==
+        - - get
+          - EXCLIT
+        - 3
+      - 0.5
+      - 1
+    - - interpolate
+      - - linear
+      - - coalesce
+        - - get
+          - VALNMR
+        - 99
+      - 3
+      - 0.6
+      - 10
+      - 1
+    - - let
+      - angle
+      - - +
+        - - '-'
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - case
+          - - '>='
+            - - get
+              - SECTR2
+            - - get
+              - SECTR1
+          - 0
+          - 360
+      - - interpolate
+        - - linear
+        - - var
+          - angle
+        - 0
+        - 3
+        - 6
+        - 1
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - has
+    - SECTR1
+  - - has
+    - SECTR2
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-arc-3
+  layout:
+    icon-image:
+    - let
+    - angle
+    - - +
+      - - '-'
+        - - get
+          - SECTR2
+        - - get
+          - SECTR1
+      - - case
+        - - '>='
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - 0
+        - 360
+    - - concat
+      - arc-
+      - - step
+        - - var
+          - angle
+        - -1
+        - 0
+        - 0
+        - 4.444
+        - 1
+        - 13.333
+        - 2
+        - 40
+        - 3
+        - 120
+        - 4
+      - '-'
+      - - get
+        - color
+    icon-overlap: always
+    icon-pitch-alignment: map
+    icon-rotate:
+    - '-'
+    - - get
+      - SECTR2
+    - - let
+      - angle
+      - - +
+        - - '-'
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - case
+          - - '>='
+            - - get
+              - SECTR2
+            - - get
+              - SECTR1
+          - 0
+          - 360
+      - - step
+        - - var
+          - angle
+        - -1
+        - 0
+        - 1.481
+        - 4.444
+        - 4.444
+        - 13.333
+        - 13.333
+        - 40
+        - 40
+        - 120
+        - 120
+    icon-rotation-alignment: map
+    icon-size:
+    - '*'
+    - - case
+      - - ==
+        - - get
+          - EXCLIT
+        - 3
+      - 0.5
+      - 1
+    - - interpolate
+      - - linear
+      - - coalesce
+        - - get
+          - VALNMR
+        - 99
+      - 3
+      - 0.6
+      - 10
+      - 1
+    - - let
+      - angle
+      - - +
+        - - '-'
+          - - get
+            - SECTR2
+          - - get
+            - SECTR1
+        - - case
+          - - '>='
+            - - get
+              - SECTR2
+            - - get
+              - SECTR1
+          - 0
+          - 360
+      - - interpolate
+        - - linear
+        - - var
+          - angle
+        - 0
+        - 3
+        - 6
+        - 1
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - '>'
+    - - get
+      - VALNMR
+    - 15
+  - - '!'
+    - - has
+      - ORIENT
+  - - '!'
+    - - has
+      - SECTR1
+  - - '>='
+    - - zoom
+    - 10
+  id: lights-full
+  layout: {}
+  paint:
+    circle-opacity: 0
+    circle-pitch-alignment: map
+    circle-radius:
+    - step
+    - - get
+      - VALNMR
+    - 0
+    - 0
+    - 40
+    - 20
+    - 60
+    circle-stroke-color:
+    - match
+    - - get
+      - COLOUR
+    - '1'
+    - '#fab20b'
+    - '3'
+    - '#ed1c24'
+    - '4'
+    - '#00a650'
+    - '6'
+    - '#fab20b'
+    - '11'
+    - '#fab20b'
+    - '#800080'
+    circle-stroke-opacity: 0.7
+    circle-stroke-width: 5
+  source: bsh
+  source-layer: AidsAndServices
+  type: circle
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - VALNMR
+  id: light-stars
+  layout:
+    icon-image:
+    - case
+    - - '>'
+      - - get
+        - VALNMR
+      - 10
+    - light-major
+    - light-minor
+    icon-overlap: always
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - CATFOG
+  id: fogsignals
+  layout:
+    icon-image: fogsignal
+    icon-overlap: always
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - ==
+    - - get
+      - CONRAD
+    - 3
+  id: radar-reflectors
+  layout:
+    icon-image: radar-reflector
+    icon-offset:
+    - 0
+    - -8
+    icon-overlap: always
+    icon-rotate: -60
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - any
+    - - has
+      - TOPSHP
+    - - has
+      - BOYSHP
+    - - has
+      - BCNSHP
+  id: topmarks
+  layout:
+    icon-image:
+    - case
+    - - all
+      - - has
+        - BOYSHP
+      - - ==
+        - - get
+          - color
+        - RW
+    - sphere/red
+    - - all
+      - - has
+        - BOYSHP
+      - - ==
+        - - get
+          - color
+        - BRB
+    - 2_spheres/black
+    - - all
+      - - has
+        - BCNSHP
+      - - ==
+        - - get
+          - color
+        - BRB
+    - 2_spheres/black
+    - - all
+      - - has
+        - BOYSHP
+      - - ==
+        - - get
+          - CATLAM
+        - 2
+      - - ==
+        - - get
+          - OBJNAM
+        - '1'
+    - cone_point_up/green
+    - - all
+      - - has
+        - BOYSHP
+      - - ==
+        - - get
+          - CATLAM
+        - 1
+      - - ==
+        - - get
+          - OBJNAM
+        - '2'
+    - cylinder/red
+    - - ==
+      - - get
+        - CATSPM
+      - '46'
+    - flag/generic
+    - - ==
+      - - get
+        - CATCAM
+      - 1
+    - 2_cones_up/black
+    - - ==
+      - - get
+        - CATCAM
+      - 2
+    - 2_cones_base_together/black
+    - - ==
+      - - get
+        - CATCAM
+      - 3
+    - 2_cones_down/black
+    - - ==
+      - - get
+        - CATCAM
+      - 4
+    - 2_cones_point_together/black
+    - - concat
+      - TOPSHP
+      - /
+      - - get
+        - TOPSHP
+      - /
+      - - coalesce
+        - - get
+          - COLPAT
+        - 0
+      - /
+      - - coalesce
+        - - get
+          - color
+        - 0
+    icon-offset:
+    - case
+    - - has
+      - TOPSHP
+    - - literal
+      - - 0
+        - -20
+    - - has
+      - BCNSHP
+    - - literal
+      - - 0
+        - -19
+    - - ==
+      - - get
+        - BOYSHP
+      - 1
+    - - literal
+      - - 0
+        - -12
+    - - ==
+      - - get
+        - BOYSHP
+      - 2
+    - - literal
+      - - 0
+        - -8
+    - - ==
+      - - get
+        - BOYSHP
+      - 3
+    - - literal
+      - - 0
+        - -9
+    - - literal
+      - - 0
+        - -22
+    icon-overlap: always
+    icon-rotate:
+    - case
+    - - all
+      - - has
+        - BOYSHP
+      - - '!'
+        - - in
+          - - get
+            - BOYSHP
+          - - literal
+            - - 6
+              - 7
+    - 15
+    - 0
+    icon-size:
+    - case
+    - - any
+      - - has
+        - BOYSHP
+      - - has
+        - BCNSHP
+    - 1
+    - 1.2
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - has
+  - BOYSHP
+  id: buoys
+  layout:
+    icon-image:
+    - concat
+    - BOYSHP
+    - /
+    - - get
+      - BOYSHP
+    - /
+    - - coalesce
+      - - get
+        - COLPAT
+      - 0
+    - /
+    - - coalesce
+      - - get
+        - color
+      - 0
+    icon-overlap: always
+    text-offset:
+    - 0
+    - 1
+    text-optional: true
+    text-size: *smallerfont
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - has
+  - BCNSHP
+  id: beacons
+  layout:
+    icon-image:
+    - case
+    - - all
+      - - ==
+        - - get
+          - BCNSHP
+        - 1
+      - - ==
+        - - get
+          - CATLAM
+        - 2
+      - - '!'
+        - - has
+          - COLOUR
+    - perch-starboard
+    - - all
+      - - ==
+        - - get
+          - BCNSHP
+        - 1
+      - - ==
+        - - get
+          - CATLAM
+        - 1
+      - - '!'
+        - - has
+          - COLOUR
+    - perch-port
+    - - all
+      - - ==
+        - - get
+          - BCNSHP
+        - 2
+      - - ==
+        - - get
+          - CATLAM
+        - 2
+      - - '!'
+        - - has
+          - COLOUR
+    - withy-starboard
+    - - all
+      - - ==
+        - - get
+          - BCNSHP
+        - 2
+      - - ==
+        - - get
+          - CATLAM
+        - 1
+      - - '!'
+        - - has
+          - COLOUR
+    - withy-port
+    - - concat
+      - BCNSHP
+      - /
+      - - get
+        - BCNSHP
+      - /
+      - - coalesce
+        - - get
+          - COLPAT
+        - 0
+      - /
+      - - coalesce
+        - - get
+          - color
+        - 0
+    icon-overlap: always
+    text-offset:
+    - 0
+    - 1
+    text-optional: true
+    text-size: *smallerfont
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - CATLMK
+  id: landmarks
+  layout:
+    icon-image:
+    - case
+    - - in
+      - 20
+      - - get
+        - FUNCTN
+    - church
+    - - in
+      - 21
+      - - get
+        - FUNCTN
+    - church
+    - - all
+      - - in
+        - 17
+        - - get
+          - CATLMK
+      - - has
+        - color
+    - - concat
+      - BCNSHP/3/
+      - - coalesce
+        - - get
+          - COLPAT
+        - 0
+      - /
+      - - coalesce
+        - - get
+          - color
+        - 0
+    - - concat
+      - CATLMK/
+      - - get
+        - CATLMK
+    icon-overlap: always
+    text-anchor: bottom-left
+    text-field: '{OBJNAM}'
+    <<: *boldfont
+    text-offset:
+    - 1.2
+    - -1.2
+    text-optional: true
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - VALMAG
+  id: magnetic-variation
+  layout:
+    text-field: '{label}'
+    <<: *boldfont
+  paint:
+    text-color: magenta
+  source: bsh
+  source-layer: Topography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - has
+    - CATNAV
+  id: navigation-lines
+  layout: {}
+  paint:
+    line-color: black
+    line-dasharray:
+    - 4
+    - 2
+    line-width: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - has
+    - CATTRK
+  id: navigation-tracks
+  paint:
+    line-color: gray
+    line-width: 1
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - LineString
+  - - has
+    - util_type
+  id: cables-pipes-sym
+  layout:
+    icon-image:
+    - case
+    - - has
+      - CATPIP
+    - pipeline
+    - cable
+    icon-overlap: always
+    symbol-placement: line
+    symbol-spacing: 25
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - any
+    - - has
+      - RESTRN
+    - - has
+      - CATMPA
+    - - has
+      - CATCBL
+    - - has
+      - CATPRA
+    - - has
+      - CATREA
+    - - has
+      - util_type
+  id: restricted-areas
+  paint:
+    line-color:
+    - case
+    - - in
+      - 7
+      - - get
+        - RESTRN
+    - magenta
+    - - in
+      - 4
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 5
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 6
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 7
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 22
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 23
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 27
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 28
+      - - get
+        - CATREA
+    - green
+    - magenta
+    line-dasharray:
+    - 4
+    - 2
+    line-opacity: 0.8
+  source: bsh
+  source-layer: -Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - any
+    - - has
+      - RESTRN
+    - - has
+      - CATMPA
+    - - has
+      - CATCBL
+    - - has
+      - CATPRA
+    - - has
+      - CATREA
+    - - has
+      - util_type
+  id: restricted-areas-sym
+  layout:
+    icon-image:
+    - case
+    - - in
+      - 7
+      - - get
+        - RESTRN
+    - area-m
+    - - in
+      - 4
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 5
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 6
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 7
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 22
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 23
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 27
+      - - get
+        - CATREA
+    - area-g
+    - - in
+      - 28
+      - - get
+        - CATREA
+    - area-g
+    - area-m
+    icon-overlap: always
+    symbol-placement: line
+    symbol-spacing: 25
+  paint:
+    icon-opacity: 0.5
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - in
+    - 7
+    - - get
+      - RESTRN
+  id: restricted-areas-no-entry
+  paint:
+    fill-color: red
+    fill-opacity: 0.05
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - in
+    - 8
+    - - get
+      - RESTRN
+  id: restricted-areas-restricted-entry
+  paint:
+    fill-color: yellow
+    fill-opacity: 0.03
+  source: bsh
+  source-layer: Hydrography
+  type: fill
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - any
+    - - has
+      - RESTRN
+  id: restricted-no-anchor
+  layout:
+    icon-image:
+    - case
+    - - in
+      - 11
+      - - get
+        - RESTRN
+    - no-diving
+    - - in
+      - 1
+      - - get
+        - RESTRN
+    - no-anchor
+    - - in
+      - 3
+      - - get
+        - RESTRN
+    - no-fishing
+    - xxx
+    icon-overlap: always
+    symbol-placement: line
+    symbol-spacing: 100
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - any
+    - - has
+      - RESTRN
+    - - has
+      - CATMPA
+    - - has
+      - CATCBL
+    - - has
+      - CATPRA
+    - - has
+      - CATREA
+    - - has
+      - util_type
+    - - has
+      - CATACH
+  id: restricted-area-names
+  layout:
+    text-field: '{OBJNAM}'
+    <<: *basefont
+  paint:
+    text-color:
+    - case
+    - - in
+      - 7
+      - - get
+        - RESTRN
+    - magenta
+    - - in
+      - 4
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 5
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 6
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 7
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 22
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 23
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 27
+      - - get
+        - CATREA
+    - green
+    - - in
+      - 28
+      - - get
+        - CATREA
+    - green
+    - magenta
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATMFA
+  id: marine-farm
+  paint:
+    line-color:
+    - case
+    - - ==
+      - - get
+        - CATMFA
+      - 2
+    - magenta
+    - black
+    line-dasharray:
+    - 4
+    - 4
+    line-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - ==
+    - - get
+      - CATMFA
+    - 2
+  id: marine-farm-shellfish
+  layout:
+    icon-image: shellfish
+    icon-overlap: always
+    icon-size: 0.8
+    symbol-placement: line
+    symbol-spacing: 90
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATMFA
+  - - '!='
+    - - get
+      - CATMFA
+    - 2
+  id: marine-farm-general
+  layout:
+    icon-image: marine-farm
+    icon-overlap: always
+    icon-size: 0.8
+    symbol-spacing: 90
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATACH
+  id: anchorages
+  paint:
+    line-color: magenta
+    line-dasharray:
+    - 4
+    - 4
+    line-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATACH
+  id: anchorages-sym
+  layout:
+    icon-image: anchor
+    icon-overlap: always
+    icon-size: 0.6
+    symbol-placement: line
+    symbol-spacing: 100
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - CATMPA
+  id: military-sym
+  layout:
+    icon-image: military
+    icon-overlap: always
+    icon-size: 0.8
+    symbol-placement: line
+    symbol-spacing: 120
+  paint:
+    icon-opacity: 0.8
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - MARSYS
+  id: charts
+  layout: {}
+  paint:
+    line-color: gray
+    line-dasharray:
+    - 2
+    - 2
+  source: bsh
+  source-layer: AidsAndServices
+  type: line
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - MARSYS
+  id: chart-labels
+  layout:
+    symbol-placement: line
+    text-anchor: top
+    text-field: '{name}'
+    <<: *basefont
+  paint:
+    text-color: gray
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  id: seabed
+  layout:
+    icon-image:
+    - case
+    - - any
+      - - '>'
+        - - get
+          - CATWED
+        - 2
+    - seagrass
+    - - any
+      - - has
+        - CATWED
+      - - ==
+        - - get
+          - caution_type
+        - 8
+    - kelp
+    - kelp
+    icon-offset:
+    - 0
+    - -6
+    text-anchor: top
+    text-field:
+    - case
+    - - has
+      - CATWED
+    - - match
+      - - get
+        - CATWED
+      - 1
+      - Ke
+      - 2
+      - Wd
+      - 3
+      - Sg
+      - 4
+      - Sa
+      - ''
+    - - concat
+      - - match
+        - - get
+          - NATQUA
+        - '1'
+        - f
+        - '2'
+        - m
+        - '3'
+        - c
+        - '4'
+        - brk
+        - '5'
+        - stk
+        - '6'
+        - so
+        - '7'
+        - stf
+        - '8'
+        - vol
+        - '9'
+        - ca
+        - '10'
+        - h
+        - ''
+      - - match
+        - - get
+          - NATSUR
+        - '1'
+        - M
+        - 1/4
+        - M/S
+        - '2'
+        - Cy
+        - '3'
+        - Si
+        - '4'
+        - S
+        - 4/1
+        - S/M
+        - 4/5
+        - S/St
+        - 4/6
+        - S/G
+        - 4/7
+        - S/P
+        - 4/8
+        - S/Cb
+        - '5'
+        - St
+        - '6'
+        - G
+        - '7'
+        - P
+        - 7,8
+        - P/Cb
+        - 7/8
+        - P/Cb
+        - '8'
+        - Cb
+        - 8,7
+        - Cb/P
+        - 8/7
+        - Cb/P
+        - '9'
+        - R
+        - '11'
+        - La
+        - '14'
+        - Co
+        - '17'
+        - Sh
+        - '18'
+        - Bo
+        - ''
+    <<: *basefont
+    text-optional: true
+  paint:
+    text-color: gray
+  source: bsh
+  source-layer: Hydrography
+  type: symbol
+- id: spot-soundings
+  layout:
+    text-anchor: center
+    text-field:
+    - let
+    - val
+    - - get
+      - VALSOU
+    - - let
+      - isNegative
+      - - <
+        - - var
+          - val
+        - 0
+      - - let
+        - absVal
+        - - '*'
+          - - var
+            - val
+          - - case
+            - - var
+              - isNegative
+            - -1
+            - 1
+        - - let
+          - valTimes10
+          - - floor
+            - - '*'
+              - - var
+                - absVal
+              - 10
+          - - let
+            - valStr
+            - - to-string
+              - - var
+                - valTimes10
+            - - let
+              - len
+              - - length
+                - - var
+                  - valStr
+              - - let
+                - intPart
+                - - case
+                  - - <
+                    - - var
+                      - len
+                    - 2
+                  - '0'
+                  - - slice
+                    - - var
+                      - valStr
+                    - 0
+                    - - '-'
+                      - - var
+                        - len
+                      - 1
+                - - let
+                  - decDigit
+                  - - slice
+                    - - var
+                      - valStr
+                    - - '-'
+                      - - var
+                        - len
+                      - 1
+                    - - var
+                      - len
+                  - - let
+                    - subDigit
+                    - - match
+                      - - var
+                        - decDigit
+                      - '0'
+                      - ''
+                      - '1'
+                      - "\u2081"
+                      - '2'
+                      - "\u2082"
+                      - '3'
+                      - "\u2083"
+                      - '4'
+                      - "\u2084"
+                      - '5'
+                      - "\u2085"
+                      - '6'
+                      - "\u2086"
+                      - '7'
+                      - "\u2087"
+                      - '8'
+                      - "\u2088"
+                      - '9'
+                      - "\u2089"
+                      - x
+                    - - concat
+                      - - case
+                        - - var
+                          - isNegative
+                        - '-'
+                        - ''
+                      - - var
+                        - intPart
+                      - - var
+                        - subDigit
+    <<: *basefont
+    text-size: *increasedfont
+  paint:
+    text-color:
+    - case
+    - - '>'
+      - 0
+      - - get
+        - VALSOU
+    - green
+    - - <
+      - 5
+      - - get
+        - VALSOU
+    - gray
+    - black
+  source: bsh
+  source-layer: SOUNDG
+  type: symbol
+- filter:
+  - all
+  - - has
+    - DRVAL1
+  - - '!'
+    - - has
+      - DRVAL2
+  id: deptharea-label
+  layout:
+    text-field:
+    - concat
+    - - case
+      - - ==
+        - - get
+          - QUASOU
+        - 10
+      - 'maintained depth '
+      - ''
+    - - get
+      - DRVAL1
+    - m
+    <<: *basefont
+  paint:
+    text-opacity: 0.8
+  source: bsh
+  source-layer: SkinOfTheEarth
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Polygon
+  - - has
+    - OBJNAM
+  id: topo-labels
+  layout:
+    text-field: '{OBJNAM}'
+    <<: *italicfont
+  paint:
+    text-color: gray
+  source: bsh
+  source-layer: Topography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - berth_type
+  - - has
+    - OBJNAM
+  id: berth-labels
+  layout:
+    text-field: '{OBJNAM}'
+    <<: *basefont
+  paint:
+    text-color: magenta
+  source: bsh
+  source-layer: Topography
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - any
+    - - has
+      - BOYSHP
+    - - has
+      - BCNSHP
+  id: buoy-labels
+  layout:
+    text-anchor: bottom-left
+    text-field: '{OBJNAM}'
+    <<: *boldfont
+    text-offset:
+    - 1.2
+    - -1
+  paint: {}
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+- filter:
+  - all
+  - - ==
+    - - geometry-type
+    - Point
+  - - has
+    - LITCHR
+  - - '!'
+    - - in
+      - 8
+      - - get
+        - CATLIT
+  id: light-labels
+  layout:
+    text-anchor: top-left
+    text-field:
+    - concat
+    - - match
+      - - get
+        - LITCHR
+      - 1
+      - F
+      - 2
+      - Fl
+      - 3
+      - LFl
+      - 4
+      - Q
+      - 5
+      - VQ
+      - 6
+      - UQ
+      - 7
+      - Iso
+      - 8
+      - Oc
+      - 9
+      - IQ
+      - 10
+      - IVQ
+      - 11
+      - IUQ
+      - 12
+      - Mo
+      - 13
+      - FFl
+      - 14
+      - FlLFl
+      - 15
+      - OcFl
+      - 16
+      - FLFl
+      - 17
+      - Al.Oc
+      - 18
+      - Al.LFl
+      - 19
+      - Al.Fl
+      - 20
+      - Al.Gr
+      - 25
+      - Q+LFl
+      - 26
+      - VQ+LFl
+      - 27
+      - UQ+LFl
+      - 28
+      - Al
+      - 29
+      - Al.FFl
+      - ??
+    - - case
+      - - all
+        - - '!='
+          - - get
+            - SIGGRP
+          - (1)
+        - - '!='
+          - - get
+            - SIGGRP
+          - ()
+      - - get
+        - SIGGRP
+      - - case
+        - - any
+          - - ==
+            - - get
+              - color
+            - W
+          - - has
+            - SECTR1
+        - ''
+        - .
+    - - case
+      - - any
+        - - ==
+          - - get
+            - color
+          - W
+        - - has
+          - SECTR1
+      - ''
+      - - concat
+        - - get
+          - color
+    - - case
+      - - has
+        - SIGPER
+      - - concat
+        - ' '
+        - - get
+          - SIGPER
+        - s
+      - ''
+    - - case
+      - - has
+        - HEIGHT
+      - - concat
+        - ' '
+        - - get
+          - HEIGHT
+        - m
+      - ''
+    - - case
+      - - has
+        - VALNMR
+      - - concat
+        - ' '
+        - - get
+          - VALNMR
+        - M
+      - ''
+    <<: *basefont
+    text-offset:
+    - case
+    - - has
+      - SECTR1
+    - - literal
+      - - 1.2
+        - 1.1
+    - - literal
+      - - 1.2
+        - -0.5
+  source: bsh
+  source-layer: AidsAndServices
+  type: symbol
+name: Vector Test Tiles
+sources:
+  bsh:
+    attribution: <a href="https://freenauticalchart.net/download/">QMAP</a>
+    maxzoom: 16
+    minzoom: 6
+    type: vector
+    url: pmtiles://qmap-de-vector.pmtiles
+sprite: icons
+version: 8
