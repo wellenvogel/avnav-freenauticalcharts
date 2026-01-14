@@ -1,7 +1,7 @@
 _definitions:
-  - basefontsize: &basefontsize 12
-  - increasedfont: &increasedfont 14
-  - smallerfont: &smallerfont 10
+  - basefontsize: &basefontsize [global-state,fontSize]
+  - increasedfont: &increasedfont ["*",*basefontsize,1.15]
+  - smallerfont: &smallerfont ["*",*basefontsize,0.9]
   - &basefont
     text-font:
       - Open Sans Regular
@@ -16,7 +16,9 @@ _definitions:
     text-font:
       - Open Sans Bold
     text-size: *basefontsize     
-
+state:
+  fontSize: 
+    default: 12
 glyphs: '{fontstack}/{range}.pbf'
 layers:
 - filter:

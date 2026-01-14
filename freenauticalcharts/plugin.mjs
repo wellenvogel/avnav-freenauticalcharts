@@ -107,5 +107,12 @@ const featureListFormatter=(features,point)=>{
         return userInfo;
     }
 }
-   api.registerFeatureListFormatter("freenauticalFormatter",featureListFormatter);
+   api.registerUserMapLayer('maplibreVector','freenautical',async (options)=>{
+        return {
+            featureListFormatter: (featureList,point,context)=>featureListFormatter(featureList,point),
+            loadCallback:(map,context)=>{
+                console.log("map libre loaded",map);
+            }
+        }
+   }) 
 };
