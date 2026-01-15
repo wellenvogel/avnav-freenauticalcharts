@@ -7,3 +7,13 @@ some test css
     border-color: grey;
     white-space: unset;
 }
+
+
+.fnwidget {
+    background-image: url("compass.svg");
+    height: 1.5em;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0.2em;
+}

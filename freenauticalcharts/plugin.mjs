@@ -1,8 +1,9 @@
 //test plugin
 
 export default async (api)=>{
+   const name=api.getPluginName(); 
 
-   console.log("freenauticalcharts plugin loaded");
+   console.log(`${name} plugin loaded`);
    const computeDistance=(allFeatures,point)=>{
     allFeatures.forEach(feature=>{
         let dst=0;
@@ -105,14 +106,84 @@ const featureListFormatter=(features,point)=>{
             userInfo.position={lat:overview._lat,lon:overview._lon};
         }
         return userInfo;
+        }
     }
-}
-   api.registerUserMapLayer('maplibreVector','freenautical',async (options)=>{
+    let storeMap=(map)=>{}
+    let unsetMap=()=>{};
+    if (api.getAvNavVersion() >= 20260115){
+        const keybase=api.getStoreBaseKey();
+        const KEY=".map";
+        const mapkey=keybase+KEY;
+        storeMap=(map)=>{
+            console.log(`${name} set map`);
+            api.setStoreData(mapkey,map);
+        }
+        unsetMap=()=>{
+            console.log(`${name} unset map`);
+            api.setStoreData(mapkey,map);
+        }
+        const setMapStateValue=(name,value)=>{
+            const map=api.getStoreData(mapkey);
+            if (! map) return;
+            map.setGlobalStateProperty(name,value);
+        }
+        const getMapStateValue=(name,defaultv)=>{
+            const map=api.getStoreData(mapkey);
+            if (! map) return defaultv;
+            return (map.getGlobalState()||{})[name]||defaultv;
+        }
+        const showDialog=(ev)=>{
+            const dialogParam={
+                title:"Map Settings",
+                parameters: [
+                    {name:'fontSize',default:12,type:'NUMBER',list:[6,30],description:'set the base font size for the map'}
+                ],
+                values:{
+                    'fontSize':getMapStateValue('fontSize',12)
+                },
+                buttons:[
+                    {name:'cancel'},
+                    {name:'ok',onClick:(ev,nv)=>{
+                        for (let k in nv){
+                            console.log(`${name} update map set ${k}=${nv[k]}`);
+                            setMapStateValue(k,nv[k]);
+                        }
+                    }}
+                ]
+            }
+            api.showDialog(dialogParam,ev);
+        }
+        const ControlWidget={
+            name: 'FNMapControlWidget',
+            initFunction: (context,props)=>{
+                context.eventHandler.wclick=(ev)=>showDialog(ev);
+            },
+            renderHtml:(props,ctx)=> {
+                if (! props.map) return;
+                return `<div class="fnwidget" onclick="wclick"></div>`
+            },
+            caption: 'Settings',
+            storeKeys: {
+                map:mapkey
+            }
+
+        }
+        const ControlWidgetParam={
+            formatter:false,
+            formatterParameters: false,
+            unit: false,
+        }
+        api.registerWidget(ControlWidget,ControlWidgetParam);
+    }
+    api.registerUserMapLayer('maplibreVector','freenautical',async (options)=>{
         return {
             featureListFormatter: (featureList,point,context)=>featureListFormatter(featureList,point),
             loadCallback:(map,context)=>{
                 console.log("map libre loaded",map);
-            }
+                storeMap(map);
+            },
+            finalizeFunction:(context)=>unsetMap()
         }
-   }) 
+   })
+    
 };
