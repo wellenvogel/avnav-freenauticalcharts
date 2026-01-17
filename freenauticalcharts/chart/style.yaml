@@ -19,6 +19,10 @@ _definitions:
 state:
   fontSize: 
     default: 12
+    #the lines below are just AvNav specific and maplibre ignores them      
+    type: NUMBER
+    description: set the font size
+    list: [6,30]  
 glyphs: '{fontstack}/{range}.pbf'
 layers:
 - filter:

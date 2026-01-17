@@ -125,6 +125,9 @@ const buildHtmlInfo=(allFeatures)=>{
        */
     let storeMap=(map)=>{}
     let unsetMap=()=>{};
+    //parameters that the user can modify
+    //we parse them from the "state" field of the style
+    let parameters=[];
     if (api.getAvNavVersion() >= 20260115){
         const keybase=api.getStoreBaseKey();
         const KEY=".map";
@@ -135,6 +138,10 @@ const buildHtmlInfo=(allFeatures)=>{
             console.log(`${name} set map`);
             api.setStoreData(mapkey,map);
             const current=readCurrentFromStorage();
+            //remove all that are not in the style any more
+            for (let k in current){
+                if (parameters[k] == undefined) delete current[k];
+            }
             setMapStateValues(current);
         }
         //remove the map from the internal store
@@ -142,6 +149,7 @@ const buildHtmlInfo=(allFeatures)=>{
         unsetMap=()=>{
             console.log(`${name} unset map`);
             api.setStoreData(mapkey,undefined);
+            parameters=[];
         }
         //set a global state at the map if it is available
         const setMapStateValue=(name,value)=>{
@@ -170,12 +178,6 @@ const buildHtmlInfo=(allFeatures)=>{
         const saveCurrentToStorage=(current)=>{
             api.setLocalStorage(STORAGE_KEY,current);
         }
-        //parameters that the user can modify
-        //this must correlate to the parameters defined in the style (global state)
-        const parameters=[
-                    {name:'fontSize',default:12,type:'NUMBER',list:[6,30],description:'set the base font size for the map'}
-                ];
-
         //show a parameter dialog to allow the user to change values
         const showDialog=(ev)=>{
             const currentValues={};
@@ -228,6 +230,30 @@ const buildHtmlInfo=(allFeatures)=>{
     //options are the parameters of the layer definition
     //when you regsiter the charts
     api.registerUserMapLayer('maplibreVector','freenautical',async (options)=>{
+        if (options && options.maplibre){
+            //parse the state parameters from the style
+            //to show a dialog to the user for modifying them
+            //it uses some additional values type,description, list from the state entry
+            //that are not defined by the maplibre style spec
+            //but will work without them if the type of the default is number|string|boolean
+            const style=options.maplibre.style;
+            if (style.state){
+                for (let k in style.state){
+                    let v=style.state[k].default;
+                    let type=style.state[k].type;
+                    let list=style.state[k].list;
+                    let description=style.state[k].description;
+                    if (! type){
+                        if (typeof v == 'string') type='STRING'
+                        if (typeof v == 'boolean') type='BOOLEAN';
+                        if (typeof v == 'number') type='NUMBER';
+                    }
+                    if (type){
+                        parameters.push({name:k,type:type,default:v,list:list,description:description})
+                    }
+                }
+            }
+        }
         return {
             featureListFormatter: (featureList,point,context)=>featureListFormatter(featureList,point),
             loadCallback:(map,context)=>{
