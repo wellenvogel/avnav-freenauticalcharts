@@ -1,6 +1,12 @@
 {
   "version": "20260117",
   "description": "a plugin for freenauticalcharts",
+  "layouts": [
+    {
+      "name": "default",
+      "file": "layout-default.json"
+    }
+  ],
   "charts": [
     {
       "layers": [
