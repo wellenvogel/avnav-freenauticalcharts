@@ -1,5 +1,5 @@
 {
-  "version": "20260116",
+  "version": "20260117",
   "description": "a plugin for freenauticalcharts",
   "charts": [
     {
@@ -19,19 +19,6 @@
     {
       "layers": [
         {
-          "url": "chart/style.json",
-          "name": "main",
-          "minzoom": 6,
-          "maxzoom": 18,
-          "profile": "maplibreVector"
-        }
-      ],
-      "name": "freenautical-local",
-      "icon": "compass.svg"
-    },
-    {
-      "layers": [
-        {
           "url": "chart/style.yaml",
           "name": "main",
           "minzoom": 6,
@@ -39,7 +26,7 @@
           "profile": "plugin_freenautical"
         }
       ],
-      "name": "freenautical-yaml",
+      "name": "freenautical-local",
       "icon": "compass.svg"
     }
   ]

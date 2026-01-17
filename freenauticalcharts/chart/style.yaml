@@ -1,5 +1,6 @@
 _definitions:
   - basefontsize: &basefontsize [global-state,fontSize]
+  - soundingsfontsize: &soundingsfontsize [global-state,soundingsFontSize]
   - increasedfont: &increasedfont ["*",*basefontsize,1.15]
   - smallerfont: &smallerfont ["*",*basefontsize,0.9]
   - &basefont
@@ -22,7 +23,12 @@ state:
     #the lines below are just AvNav specific and maplibre ignores them      
     type: NUMBER
     description: set the font size
-    list: [6,30]  
+    list: [6,30]
+  soundingsFontSize:
+    default: 14
+    type: NUMBER
+    description: set the soundings font size
+    list: [6,30]    
 glyphs: '{fontstack}/{range}.pbf'
 layers:
 - filter:
@@ -2504,7 +2510,7 @@ layers:
                       - - var
                         - subDigit
     <<: *basefont
-    text-size: *increasedfont
+    text-size: *soundingsfontsize
   paint:
     text-color:
     - case
