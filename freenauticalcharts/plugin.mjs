@@ -137,11 +137,13 @@ const buildHtmlInfo=(allFeatures)=>{
         storeMap=(map)=>{
             console.log(`${name} set map`);
             api.setStoreData(mapkey,map);
+            //read the settings we save to loacl storage
             const current=readCurrentFromStorage();
             //remove all that are not in the style any more
             for (let k in current){
                 if (parameters[k] == undefined) delete current[k];
             }
+            //activate the settings at the map
             setMapStateValues(current);
         }
         //remove the map from the internal store
@@ -149,6 +151,7 @@ const buildHtmlInfo=(allFeatures)=>{
         unsetMap=()=>{
             console.log(`${name} unset map`);
             api.setStoreData(mapkey,undefined);
+            //reset the parameters
             parameters=[];
         }
         //set a global state at the map if it is available
@@ -169,6 +172,7 @@ const buildHtmlInfo=(allFeatures)=>{
             if (! map) return defaultv;
             return (map.getGlobalState()||{})[name]||defaultv;
         }
+        //the name for storing the map settings in the browsers local storage
         const STORAGE_KEY="mapsettings";
         //read the current settings values from the browsers local storage
         const readCurrentFromStorage=()=>{
@@ -179,16 +183,17 @@ const buildHtmlInfo=(allFeatures)=>{
             api.setLocalStorage(STORAGE_KEY,current);
         }
         //show a parameter dialog to allow the user to change values
+        //will be called by click on the settings widget
         const showDialog=(ev)=>{
+            //collect the current values from the map
             const currentValues={};
             for (let p of parameters){
                 currentValues[p.name]=getMapStateValue(p.name,p.default);
             }
-            const dialogParam={
-                title:"Map Settings",
-                parameters: parameters,
-                values:currentValues,
-                buttons:[
+            //build the list of buttons to show
+            //any button be default closes the dialog
+            //click handlers will get the current values as second parameter
+            const buttons=[
                     {name:'cancel'},
                     {name:'ok',onClick:(ev,nv)=>{
                         //save the current values to the local storage
@@ -200,6 +205,34 @@ const buildHtmlInfo=(allFeatures)=>{
                         }
                     }}
                 ]
+            if (api.getAvNavVersion() >= 20260117){
+                //any callback can return changed values
+                //this way we can implement a simple reset to defaults
+                //by returning an object with all defaults
+                const defaults={};
+                    for (let p of parameters){
+                        if (p.default !== undefined){
+                            defaults[p.name]=p.default;
+                        }
+                    }
+                //we only show the reset button if 
+                //there are any defaults
+                //we must set close to false to keep the dialog open    
+                if (Object.keys(defaults).length > 0){
+                    buttons.splice(0,0,{
+                        name:'reset',
+                        onClick:(ev)=>{
+                            return defaults;
+                        },
+                        close: false    
+                    })
+                }
+            }    
+            const dialogParam={
+                title:"Map Settings",
+                parameters: parameters,
+                values:currentValues,
+                buttons:buttons
             }
             api.showDialog(dialogParam,ev);
         }
